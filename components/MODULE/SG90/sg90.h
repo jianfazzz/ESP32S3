@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define PWM   10
+#define PWM   14
 
 extern uint16_t target_ticks;
 

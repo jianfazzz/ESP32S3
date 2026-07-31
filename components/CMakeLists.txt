@@ -18,6 +18,7 @@ set(src_dirs
             MODULE/BH1750
             MODULE/ADXL345
             MODULE/RC522
+            MODULE/AS608
             )
 
 
@@ -41,6 +42,7 @@ set(include_dirs
             MODULE/BH1750
             MODULE/ADXL345
             MODULE/RC522
+            MODULE/AS608
             )
 
 

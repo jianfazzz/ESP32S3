@@ -45,7 +45,7 @@
 #define TIM4    0
 //串口
 #define UART1   0
-#define UART2   0
+#define AS608             1   // 指纹传感器（使用 UART2）
 //显示
 #define OLED              1   // 0.96OLED
 #define LCD144            1   // 1.44TFT
@@ -99,6 +99,9 @@
 #if RC522
     #include"rc522.h"
 #endif
+#if AS608
+    #include"as608.h"
+#endif
 
 
 
@@ -107,6 +110,7 @@ void KeyScanHandle(void);
 void Display(void);
 void DISplaysetvalue(void);
 void CotorFun(void);
+uint8_t AS608_Add_finger(uint16_t page_id);
 
 extern SemaphoreHandle_t client_mutex;
 extern char display[32];
@@ -117,6 +121,7 @@ extern uint8_t temperature,hum,smoke,light,noise,rain;
 extern uint16_t CO2,lux;
 extern uint8_t tempMax,humMax;
 extern uint8_t angle;
+extern uint8_t finger_Register, finger_Delete;
 
 #endif
 

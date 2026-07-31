@@ -8,10 +8,8 @@ void app_main(void)
     while(1){
         KEY_scan(keyNum);
         KeyScanHandle();
-        if(setn == 1){
-            Display();
-            CotorFun();					
-        }
+        Display();
+        CotorFun();					
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
