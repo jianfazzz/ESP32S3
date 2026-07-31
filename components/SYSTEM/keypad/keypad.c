@@ -17,6 +17,7 @@ uint8_t angle=0;
 uint8_t uid[4];
 uint8_t finger_Register = 0,finger_Delete=0;//指纹标志
 uint16_t finger_count = 0;  // 已录入指纹数，用于分配下一个 page_id
+uint16_t page, score;
 
 void app_init(void){
 
@@ -105,6 +106,23 @@ void Display(void){
                     uid[0], uid[1], uid[2], uid[3]);
             OLED_ShowStr(0, 2,display, 2, 0);
         }
+
+
+
+
+        if(AS608_GetFingerPressed()==1){
+            AS608_GenImg();
+            AS608_Img2Tz(1);   
+
+
+            uint16_t page_id, score;
+            if (AS608_Search(1, 0, 300, &page_id, &score) == AS608_OK) {
+                LCD_ShowString(16, 96, (uint8_t *)"FIND!   ", BLACK, YELLOW, 32, 0);
+            } else {
+                LCD_ShowString(16, 96, (uint8_t *)"NO FIND!", BLACK, YELLOW, 32, 0);
+            }
+        }    
+
         sprintf(display,"%02d:%02d:%02d ",shi,fen,miao);
         OLED_ShowStr(0, 4, display , 2,0);
         
@@ -162,15 +180,6 @@ void CotorFun(void){
             BEEP_DEVICE(1);
         }else{
             BEEP_DEVICE(0);
-        }
-
-        uint16_t page, score;
-        if(AS608_GetFingerPressed()==1){
-            if (AS608_Search(1, 0, 300, &page, &score)  == AS608_OK) {
-                LCD_ShowString(16, 96, (uint8_t *)"FIND!   ", BLACK, YELLOW, 32, 0);
-            }else{
-                LCD_ShowString(16, 96, (uint8_t *)"NO FIND!", BLACK, YELLOW, 32, 0);
-            }   
         }
 
     }else{

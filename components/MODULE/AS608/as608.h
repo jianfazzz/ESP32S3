@@ -41,7 +41,5 @@ uint8_t AS608_Search(uint8_t buffer_id, uint16_t start, uint16_t count,
 uint8_t AS608_Empty(void);                      // 清空指纹库
 uint8_t AS608_DeleteChar(uint16_t page_id, uint16_t count); // 删除模板
 uint8_t AS608_GetFingerCount(uint16_t *count);  // 获取已存指纹数
-uint8_t AS608_SelfTest(void);                    // 自动扫描波特率并打印信息
-uint8_t AS608_PollFinger(uint16_t *page_id, uint16_t *score); // 短超时轮询搜索指纹
 
 #endif
