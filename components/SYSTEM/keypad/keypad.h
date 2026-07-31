@@ -43,13 +43,14 @@
 #define TIM2    0  
 #define TIM3    0
 #define TIM4    0
-//串口
-#define UART1   0
-#define AS608             1   // 指纹传感器（使用 UART2）
+
 //显示
 #define OLED              1   // 0.96OLED
 #define LCD144            1   // 1.44TFT
 
+//UART
+#define AS608             1   // 指纹传感器
+#define JW01              1   // 二氧化碳传感器
 
 //IIC
 #define BH1750            1   // 光照传感器
@@ -102,7 +103,9 @@
 #if AS608
     #include"as608.h"
 #endif
-
+#if JW01
+    #include"jw01.h"
+#endif
 
 
 void app_init(void);

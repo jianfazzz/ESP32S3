@@ -2,10 +2,11 @@
 #include "keypad.h"
 
 void UART_init(void) {
-    #if UART1
+    #if JW01
     {
+        // JW01 使用 UART1
         uart_config_t cfg = {
-            .baud_rate = 9600,
+            .baud_rate = JW01_BAUDRATE,
             .data_bits = UART_DATA_8_BITS,
             .parity = UART_PARITY_DISABLE,
             .stop_bits = UART_STOP_BITS_1,

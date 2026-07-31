@@ -19,6 +19,7 @@ set(src_dirs
             MODULE/ADXL345
             MODULE/RC522
             MODULE/AS608
+            MODULE/JW01
             )
 
 
@@ -43,6 +44,7 @@ set(include_dirs
             MODULE/ADXL345
             MODULE/RC522
             MODULE/AS608
+            MODULE/JW01
             )
 
 

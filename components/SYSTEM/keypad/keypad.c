@@ -24,8 +24,8 @@ void app_init(void){
     IIC_init();
     ADC_init();
     GPTIM_init();   
-
     SPI_init();
+
     WIFI_AP_init();
 
 
@@ -40,6 +40,7 @@ void app_init(void){
     SG90_init();
     RC522_Init();
     AS608_Init();
+    JW01_Init();
 
 
  
@@ -94,17 +95,21 @@ void Display(void){
     if(setn == 1 ){
         lux = BH1750_GetLux(); 
         ADXL345_ReadAccel(&x, &y, &z); 
+        CO2 = JW01_GetCO2(); 
+
+        sprintf(display,"CO2:%04uppm",CO2);
+        OLED_ShowStr(0, 0, display , 2,0);
 
         if (RC522_ReadCard(uid) == MI_OK) {
             snprintf(display, sizeof(display), "%02X%02X%02X%02X",
                     uid[0], uid[1], uid[2], uid[3]);
-            OLED_ShowStr(0, 4,display, 2, 0);
+            OLED_ShowStr(0, 2,display, 2, 0);
         }
         sprintf(display,"%02d:%02d:%02d ",shi,fen,miao);
-        OLED_ShowStr(0, 0, display , 2,0);
+        OLED_ShowStr(0, 4, display , 2,0);
         
         sprintf(display,"%.1f %.1f %.1f ",x,y,z);
-        OLED_ShowStr(0, 2, display , 2,0);
+        OLED_ShowStr(0, 6, display , 2,0);
 
         sprintf(display,"L:%d ",lux);
         LCD_ShowString(0, 0, (uint8_t *)display, BLACK, YELLOW, 32, 0);
@@ -159,16 +164,15 @@ void CotorFun(void){
             BEEP_DEVICE(0);
         }
 
-        // 用 GenImg 检测手指，不依赖 TCH 引脚
-        if(AS608_GenImg() == AS608_OK){
-            uint16_t page, score;
-            if (AS608_Img2Tz(1) == AS608_OK &&
-                AS608_Search(1, 0, 300, &page, &score) == AS608_OK) {
-                    LCD_ShowString(16, 96, (uint8_t *)"FIND!   ", BLACK, YELLOW, 32, 0);
+        uint16_t page, score;
+        if(AS608_GetFingerPressed()==1){
+            if (AS608_Search(1, 0, 300, &page, &score)  == AS608_OK) {
+                LCD_ShowString(16, 96, (uint8_t *)"FIND!   ", BLACK, YELLOW, 32, 0);
             }else{
-                    LCD_ShowString(16, 96, (uint8_t *)"NO FIND!", BLACK, YELLOW, 32, 0);
-            }
+                LCD_ShowString(16, 96, (uint8_t *)"NO FIND!", BLACK, YELLOW, 32, 0);
+            }   
         }
+
     }else{
         if(finger_Register){
             if(AS608_Add_finger(finger_count) == AS608_OK){

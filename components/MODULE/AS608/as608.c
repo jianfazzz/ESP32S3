@@ -1,5 +1,4 @@
 #include "as608.h"
-#include "myuart.h"
 #include "keypad.h"
 #include <string.h>
 
@@ -270,5 +269,19 @@ uint8_t AS608_SelfTest(void) {
 
     ESP_LOGE(TAG, "no response on any baudrate. Check TX/RX and VCC.");
     return AS608_ERR;
+}
+
+/* ===== 短超时轮询搜索指纹（主循环用，不阻塞） ===== */
+uint8_t AS608_PollFinger(uint16_t *page_id, uint16_t *score) {
+    // GenImg 短超时 150ms：有手指时很快返回，无手指时 150ms 内返回超时/NOFINGER
+    uint8_t cmd[1] = { AS608_CMD_GENIMG };
+    AS608_SendPacket(cmd, 1);
+    uint16_t len;
+    uint8_t ack = AS608_RecvPacket(NULL, &len, 150);
+    if (ack != AS608_OK) return ack;
+
+    if (AS608_Img2Tz(1) != AS608_OK) return AS608_ERR;
+    if (AS608_Search(1, 0, 300, page_id, score) != AS608_OK) return AS608_ERR;
+    return AS608_OK;
 }
 
